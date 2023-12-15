@@ -14,13 +14,17 @@ const getUsers = async (req, res) => {
     const colRef = collection(db, "users");
 
     const querySnapshot = await getDocs(colRef);
+    const users = [];
+
     querySnapshot.forEach((doc) => {
-      console.log(doc.id, " => ", doc.data());
+      users.push({ id: doc.id, data: doc.data() });
     });
 
-    res
-      .status(200)
-      .json({ success: true, message: "Data retrieved successfully" });
+    res.status(200).json({
+      success: true,
+      message: "Data retrieved successfully",
+      data: users,
+    });
   } catch (error) {
     console.error("Error getting documents: ", error);
     res.status(500).json({ success: false, message: "Internal Server Error" });

@@ -37,7 +37,8 @@ const loginUser = async (req, res) => {
         .json({ error: true, status: 401, message: "Incorrect email" });
     }
 
-    const user = querySnapshot.docs[0].data();
+    const userDoc = querySnapshot.docs[0];
+    const user = userDoc.data();
 
     const passwordMatch = await bcrypt.compare(password, user.password);
 
@@ -47,9 +48,17 @@ const loginUser = async (req, res) => {
         .json({ error: true, status: 401, message: "Incorrect Password" });
     }
 
-    const token = jwt.sign({ userId: user.id, email: user.email }, SECRET_KEY);
+    const token = jwt.sign(
+      { userId: userDoc.id, email: user.email, name: user.username },
+      SECRET_KEY
+    );
 
-    res.status(200).json({ success: true, token });
+    res.status(200).json({
+      success: true,
+      token,
+      userId: userDoc.id,
+      name: user.username,
+    });
   } catch (error) {
     console.error("Error authenticating user: ", error);
     res

@@ -14,7 +14,10 @@ app.use(express.urlencoded({ extended: true }));
 app.get("/profile", profileController.getUsers);
 app.post("/profile", profileController.registerUser);
 app.post("/login", loginUser);
+app.get("/", (req, res) => {
+  res.send("hello");
+});
 
 app.listen(process.env.PORT, () => {
-  console.log("Server is running on port 8080");
+  console.log(`Server is running on port ${process.env.PORT}`);
 });
