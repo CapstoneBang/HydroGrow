@@ -3,10 +3,12 @@ import profileController from "../controllers/profileController.js";
 import { loginUser } from "../controllers/authController.js";
 import tanamanController from "../controllers/tanamanController.js";
 import { authenticateToken } from "../middleware/index.js";
+import getMedaliCount from "../controllers/medaliController.js";
 
 const router = express.Router();
 
 router.get("/profile", authenticateToken, profileController.getUsers);
+router.post("/medali", getMedaliCount);
 router.post("/tanaman", authenticateToken, async (req, res) => {
   try {
     const userEmail = req.body.email;
